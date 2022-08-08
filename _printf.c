@@ -1,39 +1,66 @@
-#include "holberton.h"
+include "main.h"
+
+void print_buffer(char buffer[], int *buff_ind);
 
 /**
- * get_print - selects the right printing function
- * depending on the conversion specifier passed to _printf
- * @s: character that holds the conversion specifier
- * Description: the function loops through the structs array
- * func_arr[] to find a match between the specifier passed to _printf
- * and the first element of the struct, and then the approriate
- * printing function
- * Return: a pointer to the matching printing function
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
  */
-int (*get_print(char s))(va_list, flags_t *)
+int _printf(const char *format, ...)
 {
-	ph func_arr[] = {
-		{'i', print_int},
-		{'s', print_string},
-		{'c', print_char},
-		{'d', print_int},
-		{'u', print_unsigned},
-		{'x', print_hex},
-		{'X', print_hex_big},
-		{'b', print_binary},
-		{'o', print_octal},
-		{'R', print_rot13},
-		{'r', print_rev},
-		{'S', print_bigS},
-		{'p', print_address},
-		{'%', print_percent}
-		};
-	int flags = 14;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
-	register int i;
+	if (format == NULL)
+		return (-1);
 
-	for (i = 0; i < flags; i++)
-		if (func_arr[i].c == s)
-			return (func_arr[i].f);
-	return (NULL);
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
+	{
+		if (format[i] != '%')
+		{
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
+		}
+		else
+		{
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
+		}
+	}
+
+	print_buffer(buffer, &buff_ind);
+
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
 }

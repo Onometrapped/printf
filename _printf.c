@@ -33,33 +33,37 @@ int _printf(const char *format, ...)
 			}
 			if (format[i + 1] == 's')
 			{
-			    i++;
-			    size += put_string(va_arg(spec, char *));
+				i++;
+				size += put_string(va_arg(spec, char *));
 			}
 			if (format[i + 1] == 'd')
 			{
 			    i++;
 			    int num = va_arg(spec, int);
+
 			    if (num < 0)
 			    {
 			        num = num * -1;
-					_putchar('-');
-					size += _putchar(num % 10 + '0');
+				_putchar('-');
+				size += _putchar(num % 10 + '0');
 			    }
 			    else
-			        size += _putchar(num % 10 + '0');
+				size += _putchar(num % 10 + '0');
 			}
 			if (format[i + 1] == 'i')
 			{
+				unsigned int num = va_arg(spec, unsigned int);
+
 				if (num < 0)
 			    {
 			        put_string("unsigned int expected");
-					return(NULL);
 			    }
 			    else
 			        size += _putchar(num % 10 + '0');
 			}
 		}
-	}va_end(spec);
+	}
+	va_end(spec);
 	return (size);
+
 }

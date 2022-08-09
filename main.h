@@ -53,6 +53,7 @@ int print_string(va_list types, char buffer[],
 int print_percent(va_list types, char buffer[],
 	int flags, int width, int precision, int size);
 int _putchar(char c);
+int put_string(char *str);
 
 /* Functions to print numbers */
 int print_int(va_list types, char buffer[],
@@ -115,4 +116,4 @@ int is_digit(char);
 long int convert_size_number(long int num, int size);
 long int convert_size_unsgnd(unsigned long int num, int size);
 
-#endif /* MAIN_H */
+#endif * MAIN_H */

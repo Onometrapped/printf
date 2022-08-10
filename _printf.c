@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include "main.h"
+/* #include "main.h" */
 /**
  *_printf - prints formatted output
  *@format: pointer to char to be formatted

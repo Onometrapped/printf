@@ -2,7 +2,7 @@
 
 /**
  * get_flags - Calculates active flags
- * @format: Formatted string in which to print the arguments
+ * @format: Formatted string to print the arguments in
  * @i: take a parameter.
  * Return: Flags
  */
